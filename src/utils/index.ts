@@ -2,14 +2,17 @@ import { useEffect, useState } from "react";
 
 export const isFalsy = (value: unknown) => value === 0 ? false : !value;
 
+export const isVoid = (value: unknown) => value === undefined || value === null || value === '';
+// let b: { [key: string]: unknown }
+// b = { name: "ja", ds: "sdf" }
 //在一个函数里，改变传入的对象本身是不好的
-export const cleanObject = (object: Object) => {
+export const cleanObject = (object: { [key: string]: unknown }) => {
   const result = { ...object };
   Object.keys(object).forEach(key => {
-    //@ts-ignore   表示这里有错误，但是被压制了，所以不报错
+
     const value = result[key];
-    if (isFalsy(value)) {
-      //@ts-ignore
+    if (isVoid(value)) {
+
       delete result[key];
     }
   })
@@ -28,6 +31,8 @@ export const useDebounce = <V>(value: V, delay?: number) => { //?代表可无，
 //初始化封装
 export const useMount = (callback: () => void) => {
   useEffect(() => {
-    callback()
+    callback();
+    //TODO 依赖项里加上callback会造成无限循环，这个和useCallback以及useMemo 有关系
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 }
