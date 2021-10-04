@@ -15,8 +15,12 @@ export const AuthenticatedApp = () => {
   //     <ProjectListScreen/>
   //   </Main>
   // </div>
+
+  //定义一个异常
+  // const value: any = undefined;
   return (
     <Container>
+      {/* {value.notExist} */}
       <Header between={true}>
         <HeaderLeft gap={true}>
           {/* <img src={softwareLogo} alt="" /> */}
