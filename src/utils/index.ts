@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export const isFalsy = (value: unknown) => value === 0 ? false : !value;
 
@@ -35,4 +35,19 @@ export const useMount = (callback: () => void) => {
     //TODO 依赖项里加上callback会造成无限循环，这个和useCallback以及useMemo 有关系
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+}
+
+export const useDocumentTitle = (title: string, keepOnUnmount: boolean = true) => {
+  const oldTitle = useRef(document.title).current;
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
+  //将要卸载的时候
+  useEffect(() => {
+    return () => {
+      if (!keepOnUnmount) {
+        document.title = oldTitle;
+      }
+    }
+  }, [keepOnUnmount, oldTitle])
 }
