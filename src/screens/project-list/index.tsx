@@ -7,18 +7,28 @@ import { Typography } from "antd";
 import { useProjects } from "utils/project";
 import { useUsers } from "utils/user";
 import { useUrlQueryParam } from "utils/url";
+import { useProjectSearchParams } from "./util";
 
 export const ProjectListScreen = () => {
+  useDocumentTitle("项目列表", false);
   // const [, setParam] = useState({
   //   name: "",
   //   personId: "",
   // });
-  const [param, setParam] = useUrlQueryParam(["name", "personId"]);
-  console.log(param, "param");
-  const debouncedParam = useDebounce(param, 200);
-  const { isLoading, error, data: list } = useProjects(debouncedParam);
+
+  //下边代码抽象出来到./util.ts中
+  // //param直接从url中得到的所有数据都是string类型的
+  // const [param, setParam] = useUrlQueryParam(["name", "personId"]);
+  // //解决上述问题
+  // const projectParam = {
+  //   ...param,
+  //   personId: Number(param.personId) || undefined,
+  // };
+
+  const [param, setParam] = useProjectSearchParams();
+  // const debouncedParam = useDebounce(projectParam, 200);
+  const { isLoading, error, data: list } = useProjects(useDebounce(param, 200));
   const { data: users } = useUsers();
-  useDocumentTitle("项目列表", false);
 
   return (
     <Container>
@@ -32,7 +42,7 @@ export const ProjectListScreen = () => {
   );
 };
 
-ProjectListScreen.whyDidYouRender = false;
+ProjectListScreen.whyDidYouRender = true;
 
 const Container = styled.div`
   padding: 3.2rem;
