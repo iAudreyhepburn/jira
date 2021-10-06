@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useMountedRef } from "utils";
 interface State<D> {
   error: Error | null,
   data: D | null;
@@ -22,6 +23,7 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defa
     ...initialState
   })
 
+  const mountedRef = useMountedRef()
 
   const setData = (data: D) => setState({
     data,
@@ -42,7 +44,8 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defa
     }
     setState({ ...state, stat: 'loading' });
     return promise.then(data => {
-      setData(data);
+      if (mountedRef.current)
+        setData(data);
       return data;
     }).catch(error => {
       //catch会消化异常，如果不主动抛出，外面是接收不到异常的
