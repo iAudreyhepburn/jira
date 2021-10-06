@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { Project } from "screens/project-list/list";
 import { cleanObject } from "utils";
 import { useHttp } from "./http";
@@ -9,8 +9,10 @@ export const useProjects = (param?: Partial<Project>) => {
   const { run, ...result } = useAsync<Project[]>()
 
   useEffect(() => {
-    run(client('projects', { data: cleanObject(param || {}) }))
-    //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [param]);
+    run(
+      client('projects', { data: cleanObject(param || {}) })
+    );
+
+  }, [param, run, client]);
   return result;
 }
