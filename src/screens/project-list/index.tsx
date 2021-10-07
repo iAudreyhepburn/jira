@@ -10,9 +10,7 @@ import { useUrlQueryParam } from "utils/url";
 import { useProjectSearchParams } from "./util";
 import { Row } from "components/lib";
 
-export const ProjectListScreen = (props: {
-  setProjectModalOpen: (isOpen: boolean) => void;
-}) => {
+export const ProjectListScreen = (props: { projectButton: JSX.Element }) => {
   useDocumentTitle("项目列表", false);
   // const [, setParam] = useState({
   //   name: "",
@@ -38,16 +36,14 @@ export const ProjectListScreen = (props: {
       {/* import { Row } from "components/lib"; */}
       <Row between={true}>
         <h1>项目列表</h1>
-        <Button onClick={() => props.setProjectModalOpen(true)}>
-          创建项目
-        </Button>
+        {props.projectButton}
       </Row>
       <SearchPanel users={users || []} param={param} setParam={setParam} />
       {error ? (
         <Typography.Text type={"danger"}>{error.message}</Typography.Text>
       ) : null}
       <List
-        setProjectModalOpen={props.setProjectModalOpen}
+        projectButton={props.projectButton}
         loading={isLoading}
         users={users || []}
         dataSource={list || []}
