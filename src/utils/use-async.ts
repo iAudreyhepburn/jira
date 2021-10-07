@@ -45,6 +45,7 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defa
     // setState({ ...state, stat: 'loading' });
     setState(prevState => ({ ...prevState, stat: 'loading' }));
     return promise.then(data => {
+      //判断不要在卸载完之后再设置数据
       if (mountedRef.current)
         setData(data);
       return data;
