@@ -2,7 +2,9 @@ import { Dropdown, Menu, Table, TableProps } from "antd";
 import { ButtonNoPadding } from "components/lib";
 import dayjs from "dayjs";
 import React from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { projectListActions } from "./project-list.slice";
 import { User } from "./search-panel";
 
 //TODO 把所有的ID都改成number类型
@@ -19,6 +21,7 @@ interface ListProps extends TableProps<Project> {
   projectButton: JSX.Element;
 }
 export const List = ({ users, ...props }: ListProps) => {
+  const dispatch = useDispatch();
   return (
     <Table
       pagination={false}
@@ -66,13 +69,14 @@ export const List = ({ users, ...props }: ListProps) => {
                 overlay={
                   <Menu>
                     <Menu.Item key={"edit"}>
-                      {/* <ButtonNoPadding
+                      <ButtonNoPadding
                         type={"link"}
-                        onClick={() => props.setProjectModalOpen(true)}
+                        onClick={() =>
+                          dispatch(projectListActions.openProjectModal())
+                        }
                       >
                         编辑
-                      </ButtonNoPadding> */}
-                      {props.projectButton}
+                      </ButtonNoPadding>
                     </Menu.Item>
                   </Menu>
                 }
