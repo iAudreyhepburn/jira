@@ -16,7 +16,7 @@ export interface Project {
 }
 interface ListProps extends TableProps<Project> {
   users: User[];
-  projectButton: JSX.Element;
+  // projectButton: JSX.Element;
 }
 export const List = ({ users, ...props }: ListProps) => {
   return (
@@ -72,7 +72,7 @@ export const List = ({ users, ...props }: ListProps) => {
                       >
                         编辑
                       </ButtonNoPadding> */}
-                      {props.projectButton}
+                      {/* {props.projectButton} */}
                     </Menu.Item>
                   </Menu>
                 }
