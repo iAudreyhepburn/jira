@@ -28,6 +28,9 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defa
     ...defaultInitialState,
     ...initialState
   })
+  const [retry, setRetry] = useState(() => () => {
+
+  })
 
   const safeDispatch = useSafeDispatch(dispatch)
 
@@ -44,10 +47,16 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defa
   }), [safeDispatch])
 
   //run用来触发异步请求
-  const run = useCallback((promise: Promise<D>) => {
+  const run = useCallback((promise: Promise<D>, runConfig?: { retry: () => Promise<D> }) => {
     if (!promise || !promise.then) {
       throw new Error("请传入 Promise 类型数据");
     }
+    setRetry(() => () => {
+      if (runConfig?.retry) {
+
+        run(runConfig?.retry(), runConfig)
+      }
+    })
     // setState({ ...state, stat: 'loading' });
     safeDispatch({ stat: 'loading' });
     return promise.then(data => {
@@ -69,6 +78,8 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defa
     run,
     setData,
     setError,
+    //retry被调用时重新跑一遍run, 让state刷新一遍
+    retry,
     ...state
   }
 }

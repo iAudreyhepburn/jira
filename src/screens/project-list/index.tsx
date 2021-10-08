@@ -30,7 +30,12 @@ export const ProjectListScreen = () => {
 
   const [param, setParam] = useProjectSearchParams();
   // const debouncedParam = useDebounce(projectParam, 200);
-  const { isLoading, error, data: list } = useProjects(useDebounce(param, 200));
+  const {
+    isLoading,
+    error,
+    data: list,
+    retry,
+  } = useProjects(useDebounce(param, 200));
   const { data: users } = useUsers();
 
   return (
@@ -38,6 +43,7 @@ export const ProjectListScreen = () => {
       {/* import { Row } from "components/lib"; */}
       <Row between={true}>
         <h1>项目列表</h1>
+        <Button onClick={retry}>retry</Button>
         <ButtonNoPadding onClick={open} type={"link"}>
           创建项目
         </ButtonNoPadding>
@@ -46,7 +52,12 @@ export const ProjectListScreen = () => {
       {error ? (
         <Typography.Text type={"danger"}>{error.message}</Typography.Text>
       ) : null}
-      <List loading={isLoading} users={users || []} dataSource={list || []} />
+      <List
+        refresh={retry}
+        loading={isLoading}
+        users={users || []}
+        dataSource={list || []}
+      />
     </Container>
   );
 };
