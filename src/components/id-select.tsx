@@ -7,8 +7,8 @@ type SelectProps = React.ComponentProps<typeof Select>;
 //从SelectProps上继承Select的所有属性 Omit是把"value" | "onChange" | "options"从SelectProps中除去，使用自己定义的这些，如果直接继承SelectProps,则会报错，因为自己定义的属性和Select自身上原有的属性一样冲突了，所以要用Omit从SelectProps去除这些原有自带的属性
 interface IdSelectProps
   extends Omit<SelectProps, "value" | "onChange" | "options"> {
-  value: Raw | null | undefined;
-  onChange: (value?: number) => void;
+  value?: Raw | null | undefined;
+  onChange?: (value?: number) => void;
   defaultOptionName?: string;
   options?: { name: string; id: number }[];
 }
@@ -26,7 +26,7 @@ export const IdSelect = (props: IdSelectProps) => {
   return (
     <Select
       value={options?.length ? toNumber(value) : 0}
-      onChange={(value) => onChange(toNumber(value) || undefined)}
+      onChange={(value) => onChange?.(toNumber(value) || undefined)}
       {...restProps}
     >
       {defaultOptionName ? (

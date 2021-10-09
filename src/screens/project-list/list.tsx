@@ -6,6 +6,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useEditProject } from "utils/project";
 import { User } from "./search-panel";
+import { useProjectModal } from "./util";
 
 //TODO 把所有的ID都改成number类型
 export interface Project {
@@ -23,7 +24,9 @@ interface ListProps extends TableProps<Project> {
 }
 export const List = ({ users, ...props }: ListProps) => {
   const { mutate } = useEditProject();
+  const { startEdit } = useProjectModal();
   const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin });
+  const editProject = (id: number) => () => startEdit(id);
   // .then(props.refresh);
   return (
     <Table
@@ -82,15 +85,10 @@ export const List = ({ users, ...props }: ListProps) => {
               <Dropdown
                 overlay={
                   <Menu>
-                    <Menu.Item key={"edit"}>
-                      {/* <ButtonNoPadding
-                        type={"link"}
-                        onClick={() => props.setProjectModalOpen(true)}
-                      >
-                        编辑
-                      </ButtonNoPadding> */}
-                      {/* {props.projectButton} */}
+                    <Menu.Item onClick={editProject(project.id)} key={"edit"}>
+                      编辑
                     </Menu.Item>
+                    <Menu.Item key={"delete"}>删除</Menu.Item>
                   </Menu>
                 }
               >
