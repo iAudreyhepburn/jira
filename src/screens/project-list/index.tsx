@@ -8,7 +8,7 @@ import { useProjects } from "utils/project";
 import { useUsers } from "utils/user";
 import { useUrlQueryParam } from "utils/url";
 import { useProjectModal, useProjectSearchParams } from "./util";
-import { ButtonNoPadding, Row } from "components/lib";
+import { ButtonNoPadding, ErrorBox, Row } from "components/lib";
 
 export const ProjectListScreen = () => {
   useDocumentTitle("项目列表", false);
@@ -34,7 +34,7 @@ export const ProjectListScreen = () => {
     isLoading,
     error,
     data: list,
-    retry,
+    // retry,
   } = useProjects(useDebounce(param, 200));
   const { data: users } = useUsers();
 
@@ -43,17 +43,15 @@ export const ProjectListScreen = () => {
       {/* import { Row } from "components/lib"; */}
       <Row between={true}>
         <h1>项目列表</h1>
-        <Button onClick={retry}>retry</Button>
+        {/* <Button onClick={retry}>retry</Button> */}
         <ButtonNoPadding onClick={open} type={"link"}>
           创建项目
         </ButtonNoPadding>
       </Row>
       <SearchPanel users={users || []} param={param} setParam={setParam} />
-      {error ? (
-        <Typography.Text type={"danger"}>{error.message}</Typography.Text>
-      ) : null}
+      <ErrorBox error={error} />
       <List
-        refresh={retry}
+        // refresh={retry}
         loading={isLoading}
         users={users || []}
         dataSource={list || []}
