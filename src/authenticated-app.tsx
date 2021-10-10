@@ -120,8 +120,8 @@ const Header = styled(Row)`
 const HeaderLeft = styled(Row)``;
 const HeaderRight = styled.div``;
 const Main = styled.main`
-  /* display: flex;
-  overflow: hidden; */
+  display: flex;
+  overflow: hidden;
 `;
 
 // const PageHeader = styled.header`
