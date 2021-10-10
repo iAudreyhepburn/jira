@@ -13,7 +13,7 @@ export const ProjectScreen = () => {
         <Route path={"/kanban"} element={<KanbanScreen />} />
         <Route path={"/epic"} element={<EpicScreen />} />
         {/* 如果上边匹配不到就跳转到看板 */}
-        <Navigate to={"/kanban"} />
+        <Navigate to={window.location.pathname + "/kanban"} replace={true} />
       </Routes>
     </div>
   );
