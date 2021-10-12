@@ -1,7 +1,8 @@
 import { QueryKey, useMutation, useQuery } from "react-query";
+import { Project } from "types/Project";
 import { Task } from "types/task";
 import { useHttp } from 'utils/http'
-import { useAddConfig } from "./use-optimistic-options";
+import { useAddConfig, useEditConfig } from "./use-optimistic-options";
 
 
 export const useTasks = (param?: Partial<Task>) => {
@@ -21,5 +22,28 @@ export const useAddTask = (queryKey: QueryKey) => {
       method: 'POST'
     }),
     useAddConfig(queryKey)
+  )
+}
+
+export const useTask = (id?: number) => {
+  const client = useHttp();
+  return useQuery<Project>(
+    ['task', { id }],
+    () => client(`tasks/${id}`),
+    {
+      enabled: Boolean(id)
+    }
+  )
+}
+
+export const useEditTask = (queryKey: QueryKey) => {
+
+  const client = useHttp();
+
+  return useMutation((params: Partial<Task>) => client(`tasks/${params.id}`, {
+    method: 'PATCH',
+    data: params
+  }),
+    useEditConfig(queryKey)
   )
 }

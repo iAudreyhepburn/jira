@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { Kanban } from "types/kanban";
 import { useTasks } from "utils/task";
-import { useTaskSearchParams } from "./util";
+import { useTaskSearchParams, useTasksModal } from "./util";
 import taskIcon from "assets/task.svg";
 import bugIcon from "assets/bug.svg";
 import { useTaskTypes } from "utils/task-type";
@@ -14,18 +14,23 @@ const TaskTypeIcon = ({ id }: { id: number }) => {
   if (!name) {
     return null;
   }
-  return <img src={name === "task" ? taskIcon : bugIcon} />;
+  return <img alt={"task-icon"} src={name === "task" ? taskIcon : bugIcon} />;
 };
 
 export const KanbanColumn = ({ kanban }: { kanban: Kanban }) => {
   const { data: allTasks } = useTasks(useTaskSearchParams());
   const tasks = allTasks?.filter((task) => task.kanbanId === kanban.id);
+  const { startEdit } = useTasksModal();
   return (
     <Container>
       <h3>{kanban.name}</h3>
       <TasksContainer>
         {tasks?.map((task) => (
-          <Card style={{ marginBottom: "0.5rem" }} key={task.id}>
+          <Card
+            onClick={() => startEdit(task.id)}
+            style={{ marginBottom: "0.5rem", cursor: "pointer" }}
+            key={task.id}
+          >
             <div>{task.name}</div>
             <TaskTypeIcon id={task.typeId} />
           </Card>
