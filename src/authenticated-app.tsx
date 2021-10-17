@@ -11,6 +11,7 @@ import { resetRoute } from "utils";
 import { useState } from "react";
 import { ProjectModal } from "screens/project-list/project-modal";
 import { ProjectPopover } from "components/project-popover";
+import { UserPopover } from "components/user-popover";
 
 export const AuthenticatedApp = () => {
   //定义一个异常
@@ -60,7 +61,7 @@ const PageHeader = () => {
         </ButtonNoPadding>
         {/* 项目的划上去下拉框 */}
         <ProjectPopover />
-        <span>用户</span>
+        <UserPopover />
       </HeaderLeft>
       <HeaderRight>
         <User />
