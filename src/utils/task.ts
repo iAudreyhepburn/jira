@@ -3,7 +3,7 @@ import { Project } from "types/Project";
 import { Task } from "types/task";
 import { useHttp } from 'utils/http'
 import { SortProps } from "./kanban";
-import { useAddConfig, useDeleteConfig, useEditConfig, useReorderConfig } from "./use-optimistic-options";
+import { useAddConfig, useDeleteConfig, useEditConfig, useReorderTaskConfig } from "./use-optimistic-options";
 
 
 export const useTasks = (param?: Partial<Task>) => {
@@ -68,6 +68,6 @@ export const useReorderTask = (queryKey: QueryKey) => {
         method: 'POST'
       })
     },
-    useReorderConfig(queryKey)
+    useReorderTaskConfig(queryKey)
   )
 }
