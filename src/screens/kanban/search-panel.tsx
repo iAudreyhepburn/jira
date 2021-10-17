@@ -3,10 +3,10 @@ import { Row } from "components/lib";
 import { TaskTypeSelect } from "components/task-type-select";
 import { UserSelect } from "components/user-select";
 import { useSetUrlSearchParam } from "utils/url";
-import { useTaskSearchParams } from "./util";
+import { useTasksSearchParams } from "./util";
 
 export const SearchPanel = () => {
-  const searchParams = useTaskSearchParams();
+  const searchParams = useTasksSearchParams();
   const setSearchParams = useSetUrlSearchParam();
   const reset = () => {
     setSearchParams({

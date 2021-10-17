@@ -17,7 +17,7 @@ export const useKanbanSearchParams = () => ({ projectId: useProjectIdInUrl() })
 
 export const useKanbansQueryKey = () => ['kanbans', useKanbanSearchParams()]
 
-export const useTaskSearchParams = () => {
+export const useTasksSearchParams = () => {
   const [param, setParam] = useUrlQueryParam([
     'name',
     'typeId',
@@ -36,7 +36,7 @@ export const useTaskSearchParams = () => {
   }), [projectId, param])
 }
 
-export const useTasksQueryKey = () => ['tasks', useTaskSearchParams()]
+export const useTasksQueryKey = () => ['tasks', useTasksSearchParams()]
 
 export const useTasksModal = () => {
   const [{ editingTaskId }, setEditingTaskId] = useUrlQueryParam(['editingTaskId'])

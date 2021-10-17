@@ -1,7 +1,11 @@
 import styled from "@emotion/styled";
 import { Kanban } from "types/kanban";
 import { useTasks } from "utils/task";
-import { useKanbansQueryKey, useTaskSearchParams, useTasksModal } from "./util";
+import {
+  useKanbansQueryKey,
+  useTasksSearchParams,
+  useTasksModal,
+} from "./util";
 import taskIcon from "assets/task.svg";
 import bugIcon from "assets/bug.svg";
 import { useTaskTypes } from "utils/task-type";
@@ -12,6 +16,7 @@ import { Mark } from "components/mark";
 import { useDeleteKanban } from "utils/kanban";
 import { Row } from "components/lib";
 import React from "react";
+import { Drag, Drop, DropChild } from "components/drag-and-drop";
 
 const TaskTypeIcon = ({ id }: { id: number }) => {
   const { data: tasktypes } = useTaskTypes();
@@ -24,7 +29,7 @@ const TaskTypeIcon = ({ id }: { id: number }) => {
 
 const TaskCard = ({ task }: { task: Task }) => {
   const { startEdit } = useTasksModal();
-  const { name: keyword } = useTaskSearchParams();
+  const { name: keyword } = useTasksSearchParams();
   return (
     <Card
       onClick={() => startEdit(task.id)}
@@ -43,7 +48,7 @@ export const KanbanColumn = React.forwardRef<
   HTMLDivElement,
   { kanban: Kanban }
 >(({ kanban, ...props }, ref) => {
-  const { data: allTasks } = useTasks(useTaskSearchParams());
+  const { data: allTasks } = useTasks(useTasksSearchParams());
   const tasks = allTasks?.filter((task) => task.kanbanId === kanban.id);
 
   return (
@@ -53,9 +58,25 @@ export const KanbanColumn = React.forwardRef<
         <More kanban={kanban} key={kanban.id} />
       </Row>
       <TasksContainer>
-        {tasks?.map((task) => (
-          <TaskCard key={task.id} task={task} />
-        ))}
+        <Drop
+          type={"ROW"}
+          direction={"vertical"}
+          droppableId={String(kanban.id)}
+        >
+          <DropChild>
+            {tasks?.map((task, taskIndex) => (
+              <Drag
+                key={task.id}
+                index={taskIndex}
+                draggableId={"task" + task.id}
+              >
+                <div>
+                  <TaskCard key={task.id} task={task} />
+                </div>
+              </Drag>
+            ))}
+          </DropChild>
+        </Drop>
         <CreateTask kanbanId={kanban.id} />
       </TasksContainer>
     </Container>
